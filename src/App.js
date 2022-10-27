@@ -1,24 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { Switch, Route } from 'react-router-dom';
+import MainNavigation from './components/Layout/MainNavigation'
+import AuthForm from './components/Auth/AuthForm';
+import { useSelector } from 'react-redux';
+import { Redirect } from 'react-router'
 function App() {
+  const isLoggedIn = useSelector((state)=>state.auth.isLoggedIn);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <MainNavigation />
+      <Switch> 
+      
+        {!isLoggedIn && (
+          <Route path='/auth'>
+            <AuthForm />
+          </Route>
+        )}
+        <Route path='*'>
+          <Redirect to='/auth' />
+        </Route>
+      </Switch>
+      </>
   );
 }
 
